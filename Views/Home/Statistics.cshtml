@@ -1,0 +1,26 @@
+﻿@model IEnumerable<Tomi_Ionel.Models.ShopViewModel.OrderGroup>
+@{
+    ViewData["Title"] = "Ordered Instruments Statistics";
+}
+<h2>Ordered Instruments Statistics</h2>
+<table>
+    <tr>
+        <th>
+            Order Date
+        </th>
+        <th>
+            Ordered Instruments
+        </th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderDate)
+            </td>
+            <td>
+                @item.InstrumentCount
+            </td>
+        </tr>
+    }
+</table>

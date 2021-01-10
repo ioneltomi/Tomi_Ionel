@@ -1,0 +1,112 @@
+﻿@model Tomi_Ionel.Models.ShopViewModel.ManufacturersIndexData
+@{
+    ViewData["Title"] = "Manufacturers";
+}
+<h2>Manufacturers</h2>
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Manufacturer Name</th>
+            <th>Adress</th>
+            <th>Instruments</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Manufacturers)
+        {
+            string selectedRow = "";
+            if (item.ID == (int?)ViewData["ManufacturersID"])
+            {
+                selectedRow = "success";
+            }
+            <tr class="@selectedRow">
+                <td>
+                    @Html.DisplayFor(modelItem => item.ManufacturersName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Adress)
+                </td>
+
+                <td>
+                    @{
+                        foreach (var instrument in item.ManufacturedInstruments)
+                        {
+                            @instrument.Instrument.ID @: @instrument.Instrument.Type <br />
+                        }
+                    }
+                </td>
+                <td>
+                    <a asp-action="Index" asp-route-id="@item.ID">Select</a> |
+                    <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+@if (Model.Instruments != null)
+{
+    <h3>Instruments Manufacturers by Selected Manufacturers</h3>
+    <table class="table">
+        <tr>
+            <th></th>
+            <th>Type</th>
+            <th>Brand</th>
+            <th>Price</th>
+        </tr>
+        @foreach (var item in Model.Instruments)
+        {
+            string selectedRow = "";
+            if (item.ID == (int?)ViewData["InstrumentID"])
+            {
+                selectedRow = "success";
+            }
+            <tr class="@selectedRow">
+                <td>
+                    @Html.ActionLink("Select", "Index", new { instrumentID = item.ID })
+                </td>
+                <td>
+                    @item.Type
+                </td>
+                <td>
+                    @item.Brand
+
+                </td>
+                <td>
+                    @item.Price
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+@if (Model.Orders != null)
+{
+    <h3>
+        Customers that have ordered the Selected Instrument
+    </h3>
+    <table class="table">
+        <tr>
+            <th>Name</th>
+            <th>Order Date</th>
+        </tr>
+        @foreach (var item in Model.Orders)
+        {
+            <tr>
+                <td>
+                    @item.Customer.Name
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderDate)
+                </td>
+            </tr>
+        }
+    </table>
+}
